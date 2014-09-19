@@ -8,7 +8,7 @@ Command Line Interface to BitPay's cryptographically secure API.
 ## Global
 
 ```bash
-composer.phar global require "bitpay/php-client-cli ~2.0"
+composer.phar global require "bitpay/php-client-cli ~2.0@dev"
 ```
 
 More information about installing composer globally:
@@ -19,7 +19,7 @@ More information about installing composer globally:
 ## Local
 
 ```bash
-composer.phar require "bitpay/php-client-cli ~2.0"
+composer.phar require "bitpay/php-client-cli ~2.0@dev"
 ```
 
 # Usage
