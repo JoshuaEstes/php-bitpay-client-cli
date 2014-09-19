@@ -1,0 +1,38 @@
+{
+    "name": "bitpay/php-client-api",
+    "description": "Command Line Interface for BitPay's cryptographically secure API.",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "keywords": ["bitpay", "bitcoin", "cli"],
+    "homepage": "https://bitpay.com",
+    "support": {},
+    "authors": [],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/JoshuaEstes/php-client.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "bitpay/php-client": "~2.0",
+        "symfony/console": "~2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "bin": ["bin/bitpay"]
+}

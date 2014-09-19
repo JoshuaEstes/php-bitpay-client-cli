@@ -1,0 +1,10 @@
+/bin/**
+!/bin/bitpay
+/build/cache/
+/build/docs/
+/build/dist/
+/build/logs/
+/docs/_build/
+/vendor/
+composer.lock
+composer.phar
