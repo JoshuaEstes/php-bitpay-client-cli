@@ -30,7 +30,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UnpairCommand extends Command
 {
-
     protected function configure()
     {
         $this

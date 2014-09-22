@@ -34,7 +34,6 @@ use Bitpay\Bitpay;
  */
 class PairCommand extends Command
 {
-
     protected function configure()
     {
         $this
@@ -60,8 +59,8 @@ HELP
     {
         parent::initialize($input, $output);
 
-        $publicKey  = $input->getOption('home') . '/api.key';
-        $privateKey = $input->getOption('home') . '/api.pub';
+        $publicKey  = $input->getOption('home').'/api.key';
+        $privateKey = $input->getOption('home').'/api.pub';
         if (!file_exists($publicKey) || !file_exists($privateKey)) {
             throw new \Exception(
                 sprintf(

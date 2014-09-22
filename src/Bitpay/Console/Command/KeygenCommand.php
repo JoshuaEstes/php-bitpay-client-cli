@@ -35,7 +35,6 @@ use Bitpay\PrivateKey;
  */
 class KeygenCommand extends Command
 {
-
     protected function configure()
     {
         $this
@@ -83,8 +82,8 @@ HELP
          * the command needs to exit
          */
         if (!$input->getOption('overwrite')) {
-            $publicKey  = $input->getOption('home') . '/api.pub';
-            $privateKey = $input->getOption('home') . '/api.key';
+            $publicKey  = $input->getOption('home').'/api.pub';
+            $privateKey = $input->getOption('home').'/api.key';
             if (file_exists($publicKey) || file_exists($privateKey)) {
                 throw new \Exception(
                     sprintf(
@@ -137,8 +136,8 @@ HELP
         $manager->persist($private);
         $manager->persist($public);
 
-        chmod($input->getOption('home') . '/api.key', 0600);
-        chmod($input->getOption('home') . '/api.pub', 0644);
+        chmod($input->getOption('home').'/api.key', 0600);
+        chmod($input->getOption('home').'/api.pub', 0644);
 
         $output->writeln(
             array(
