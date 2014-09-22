@@ -12,12 +12,6 @@
             "": "src/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/JoshuaEstes/php-client.git"
-        }
-    ],
     "require": {
         "php": ">=5.3.3",
         "bitpay/php-client": "~2.0",
