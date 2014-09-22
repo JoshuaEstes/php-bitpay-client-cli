@@ -19,7 +19,7 @@ More information about installing composer globally:
 ## Local
 
 ```bash
-composer.phar require "bitpay/php-client-cli ~2.0@dev"
+composer.phar require "bitpay/php-client-cli ~2.0"
 ```
 
 # Usage
@@ -34,6 +34,38 @@ from there.
 ```bash
 bitpay keygen
 ```
+
+## Pairing Keys
+
+## Create a New Merchant Account
+
+## Invoices
+### Generate a New Invoice
+### Get Invoice Information
+### List Invoices
+### Resend IPN
+
+## Refunds
+### Create a Refund Request
+### Get the Status of a Refund Request
+### Cancel a Pending Refund Request
+
+## Bills
+### Create a New Bill
+### List Bills
+### Get a Bill
+### Update a Bill
+
+## Get Ledger Data
+
+## Payouts
+### Create a New Payout
+### Get Payouts
+### Delete a Pending Payout
+
+## Get Currencies BitPay Supports
+
+## Get Current Exchange Rates
 
 # Configuration
 
