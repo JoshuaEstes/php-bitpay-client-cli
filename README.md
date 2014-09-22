@@ -31,13 +31,41 @@ from there.
 
 ## Generating Keys
 
+The very first thing you will need to do is to generate your public and private
+keys. It is very important that you do not lose these keys and keep them in a
+safe place.
+
 ```bash
 bitpay keygen
 ```
 
 ## Pairing Keys
 
+If you have not already generated keys, please do so now.
+
+Log into you BitPay merchant account and goto the API Tokens page. Once there
+you will need to click the button that says "Add New Token". You will have a
+spiffy new Pairing Code that you will need to use for this step.
+
+Copy the Pairing Code that was generated on the API Tokens page in your
+merchant account. Next run the command:
+
+```bash
+bitpay pair PairinCode
+```
+
+Once this is done, you will be able to access your account related information.
+
 ## Create a New Merchant Account
+
+In the case you do not have a merchant account, you may request one using this
+command line tool. Run the command:
+
+```bash
+bitpay application
+```
+
+And just answer the questions that are asked.
 
 ## Invoices
 ### Generate a New Invoice

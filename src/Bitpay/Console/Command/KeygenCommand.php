@@ -82,13 +82,11 @@ HELP
          * the command needs to exit
          */
         if (!$input->getOption('overwrite')) {
-            $publicKey  = $input->getOption('home').'/api.pub';
-            $privateKey = $input->getOption('home').'/api.key';
-            if (file_exists($publicKey) || file_exists($privateKey)) {
+            if (file_exists($this->getPublicKeyPath()) || file_exists($this->getPrivateKeyPath())) {
                 throw new \Exception(
                     sprintf(
                         'Keys already exist in "%s", if you want to overwrite them, please pass the --overwrite option',
-                        $input->getOption('home')
+                        $this->getContainer()->getParameter('kernel.root_dir')
                     )
                 );
             }
@@ -105,7 +103,7 @@ HELP
         );
 
         if ($password) {
-            $passwordCheck = $dialog->askHiddenResponseAndValidate(
+            $dialog->askHiddenResponseAndValidate(
                 $output,
                 'Verify Key Password: ',
                 function ($value) use ($password) {
@@ -126,23 +124,33 @@ HELP
     {
         $output->writeln('<info>Generating Keys...</info>');
 
-        $private = new \Bitpay\PrivateKey($input->getOption('home').'/api.key');
-        $public  = new \Bitpay\PublicKey($input->getOption('home').'/api.pub');
+        $private = new \Bitpay\PrivateKey($this->getPrivateKeyPath());
+        $public  = new \Bitpay\PublicKey($this->getPublicKeyPath());
         $private->generate();
         $public->setPrivateKey($private);
         $public->generate();
 
-        $manager = $this->container->get('key_manager');
+        $manager = $this->getContainer()->get('key_manager');
         $manager->persist($private);
         $manager->persist($public);
 
-        chmod($input->getOption('home').'/api.key', 0600);
-        chmod($input->getOption('home').'/api.pub', 0644);
+        chmod($this->getPrivateKeyPath(), 0600);
+        chmod($this->getPublicKeyPath(), 0644);
 
         $output->writeln(
             array(
-                sprintf('<info>Keys saved to "<comment>%s</comment>"</info>', $input->getOption('home')),
+                sprintf('<info>Keys saved to "<comment>%s</comment>"</info>', $this->getContainer()->getParameter('kernel.root_dir')),
             )
         );
+    }
+
+    protected function getPublicKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.public_key');
+    }
+
+    protected function getPrivateKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.private_key');
     }
 }

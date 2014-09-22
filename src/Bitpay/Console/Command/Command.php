@@ -25,11 +25,13 @@
 
 namespace Bitpay\Console\Command;
 
-use Bitpay\Bitpay;
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class Command extends BaseCommand
 {
+
+    public function getContainer()
+    {
+        return $this->getApplication()->getKernel()->getContainer();
+    }
 }
