@@ -14,7 +14,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "bitpay/php-client": "~2.0",
+        "bitpay/php-client": "~2.0@dev",
         "symfony/console": "~2.3"
     },
     "require-dev": {
