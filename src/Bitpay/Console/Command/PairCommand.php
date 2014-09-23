@@ -54,6 +54,8 @@ class PairCommand extends Command
 
     %command.full_name% 2g1h33
 
+    %command.full_name% --label="POS Terminal 321"
+
 HELP
             );
     }
