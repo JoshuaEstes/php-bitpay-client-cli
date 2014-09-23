@@ -26,8 +26,10 @@
 namespace Bitpay\Console\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Bitpay\Bitpay;
 
 /**
@@ -41,6 +43,7 @@ class PairCommand extends Command
             ->setDescription('Recieve a token for the crytographically secure bitpay api')
             ->setDefinition(
                 array(
+                    new InputOption('label', null, InputOption::VALUE_OPTIONAL, 'Label', 'php-client-cli'),
                     new InputArgument('pairingcode', InputArgument::REQUIRED, 'Pairing code from your account'),
                 )
             )
@@ -59,34 +62,89 @@ HELP
     {
         parent::initialize($input, $output);
 
-        $publicKey  = $input->getOption('home').'/api.key';
-        $privateKey = $input->getOption('home').'/api.pub';
+        $publicKey  = $this->getPublicKeyPath();
+        $privateKey = $this->getPrivateKeyPath();
         if (!file_exists($publicKey) || !file_exists($privateKey)) {
             throw new \Exception(
                 sprintf(
                     'API keys could not be found in "%s"',
-                    $input->getOption('home')
+                    $this->getContainer()->getParameter('kernel.root_dir')
                 )
             );
         }
+
+        $pairingcode = $input->getArgument('pairingcode');
+
+        if (empty($pairingcode)) {
+            $question = new Question(
+                '<info>Please enter the Paring Code:</info> ',
+                $input->getArgument('pairingcode')
+            );
+            $question->setValidator(function ($answer) {
+                if (empty($answer)) {
+                    throw new \RuntimeException('Please enter a valid response.');
+                }
+
+                return $answer;
+            });
+            $input->setArgument(
+                'pairingcode',
+                $this->getHelper('question')->ask(
+                    $input,
+                    $output,
+                    $question
+                )
+            );
+        }
+
+        $label = $input->getOption('label');
+        $question = new Question(
+            sprintf('<info>Please enter a label [<comment>%s</comment>]:</info> ', $label),
+            $label
+        );
+        $input->setOption(
+            'label',
+            $this->getHelper('question')->ask(
+                $input,
+                $output,
+                $question
+            )
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $keyManager = $this->container->get('key_manager');
-        $publicKey = $keyManager->load($input->getOption('home').'/api.pub');
+        $keyManager = $this->getContainer()->get('key_manager');
+        $publicKey = $keyManager->load($this->getPublicKeyPath());
         $sin = new \Bitpay\SinKey();
         $sin->setPublicKey($publicKey);
         $sin->generate();
 
-        $client = $this->container->get('client');
         $payload = array(
             'id'          => (string) $sin,
             'pairingCode' => $input->getArgument('pairingcode'),
-            'label'       => 'php-bitpay-client',
+            'label'       => $input->getOption('label'),
         );
 
-        $token = $client->createToken($payload);
+        $client = $this->getContainer()->get('client');
+        $token  = $client->createToken($payload);
         var_dump($token);
+        $output->writeln(
+            array(
+                sprintf('Token:    %s', $token->getToken()),
+                sprintf('Resource: %s', $token->getResource()),
+                sprintf('Facade:   %s', $token->getFacade()),
+            )
+        );
+    }
+
+    protected function getPublicKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.public_key');
+    }
+
+    protected function getPrivateKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.private_key');
     }
 }
