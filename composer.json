@@ -1,5 +1,5 @@
 {
-    "name": "bitpay/php-client-api",
+    "name": "bitpay/php-client-cli",
     "description": "Command Line Interface for BitPay's cryptographically secure API.",
     "license": "MIT",
     "minimum-stability": "dev",
