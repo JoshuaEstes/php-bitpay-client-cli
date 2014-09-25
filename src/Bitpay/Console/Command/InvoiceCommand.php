@@ -79,7 +79,7 @@ HELP
         } catch (\Exception $e) {
             $request = $client->getRequest();
             $response = $client->getResponse();
-            print_r((string) $request . PHP_EOL);
+            print_r((string) $request . PHP_EOL . PHP_EOL);
             print_r((string) $response . PHP_EOL);
         }
     }
