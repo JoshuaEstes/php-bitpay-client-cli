@@ -123,7 +123,6 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Generating Keys...</info>');
-
         $private = new \Bitpay\PrivateKey($this->getPrivateKeyPath());
         $public  = new \Bitpay\PublicKey($this->getPublicKeyPath());
         $private->generate();
@@ -140,6 +139,10 @@ HELP
         $output->writeln(
             array(
                 sprintf('<info>Keys saved to "<comment>%s</comment>"</info>', $this->getContainer()->getParameter('kernel.root_dir')),
+                sprintf('<info>Private Key (hex)</info> <comment>%s</comment>', $private->getHex()),
+                sprintf('<info>Public Key (hex)</info> <comment>%s</comment>', $public->getHex()),
+                sprintf('<info>Public Key (x)</info> <comment>%s</comment>', $public->getX()),
+                sprintf('<info>Public Key (y)</info> <comment>%s</comment>', $public->getY()),
             )
         );
     }

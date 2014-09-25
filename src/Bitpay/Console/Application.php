@@ -85,6 +85,8 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
 
         $commands[] = new Command\ConfigCommand();
+        $commands[] = new Command\ImportKeyCommand();
+        $commands[] = new Command\InvoiceCommand();
         $commands[] = new Command\KeygenCommand();
         $commands[] = new Command\PairCommand();
         $commands[] = new Command\UnpairCommand();

@@ -32,15 +32,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Bitpay\PrivateKey;
 
 /**
- * Command used to generate keypairs
  */
-class InvoiceCommand extends Command
+class ImportKeyCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('invoice')
-            ->setDescription('create an invoice')
+            ->setName('import-key')
+            ->setDescription('')
+            ->setDefinition(
+                array(
+                    new InputOption('public', null, InputOption::VALUE_NONE, ''),
+                    new InputOption('private', null, InputOption::VALUE_NONE, ''),
+                    new InputArgument('value', InputArgument::REQUIRED, ''),
+                )
+            )
             ->setHelp(
 <<<HELP
 
@@ -48,39 +54,23 @@ HELP
             );
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        parent::initialize($input, $output);
-    }
-
-    /**
-    protected function interact(InputInterface $input, OutputInterface $output)
-    {
-    }
-     */
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $invoice = new \Bitpay\Invoice();
+        $hexValue = $input->getArgument('value');
+        $output->writeln($hexValue);
 
-        $currency = new \Bitpay\Currency();
-        $currency->setCode('USD');
-        $invoice->setCurrency($currency);
+        $key = \Bitpay\PrivateKey::createFromHex($hexValue);
 
-        $item = new  \Bitpay\Item();
-        $item->setPrice('19.95');
-        $invoice->setItem($item);
+        var_dump($key);
+    }
 
-        $client = $this->getContainer()->get('client');
+    protected function getPublicKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.public_key');
+    }
 
-        try {
-            $response = $client->createInvoice($invoice);
-            var_dump($response);
-        } catch (\Exception $e) {
-            $request = $client->getRequest();
-            $response = $client->getResponse();
-            print_r((string) $request . PHP_EOL);
-            print_r((string) $response . PHP_EOL);
-        }
+    protected function getPrivateKeyPath()
+    {
+        return $this->getContainer()->getParameter('bitpay.private_key');
     }
 }
